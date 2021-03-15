@@ -1,7 +1,11 @@
 {
   "name": "testbotosu",
   "version": "1.0.0",
-  "description": "",
+  "description": "Is a simple bot that respond you with songebob text trensfom",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Guillaume-favier/SpongeBotOsu"
+  },
   "main": "app.ts",
   "scripts": {
     "test": "tsc app.ts && node app.js"
