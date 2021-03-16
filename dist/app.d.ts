@@ -1,0 +1,11 @@
+declare const bancho: any;
+declare const fs: any;
+declare var dateFormat: any;
+declare const getDate: () => any;
+declare let Username: string;
+declare let Password: string;
+declare const getCred: () => void;
+declare const sponged: (s: string) => string;
+declare const clientf: any;
+declare const realShit: (message: any, usr: any, client: any) => Promise<void>;
+declare const startOsuBot: (clientb: any) => Promise<void>;

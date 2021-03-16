@@ -1,6 +1,17 @@
 const bancho = require('bancho.js')
 const fs = require('fs')
 var dateFormat = require('dateformat');
+import { JsonDB } from 'node-json-db';
+import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+var db = new JsonDB(new Config("command.json", true, false, '/'));
+try {
+    var data = db.getData("/cmd");
+} catch(error) {
+    // The error will tell you where the DataPath stopped. In this case test1
+    // Since /test1/test does't exist.
+    db.push("/cmd",[]);
+    console.error(error);
+};
 
 const getDate = () => {
     let dateDisplay = dateFormat(new Date(), "yyyy-mm-dd H:MM:ss");
@@ -56,14 +67,17 @@ const startOsuBot = async (clientb) => {
         clientb.on("PM", async({message, user}) =>  {
             const mess = message.toString()
             const usrname = user.ircUsername
+            let res:string
             if (usrname === Username) return
             if (mess[0] === '') {
-                console.log('nooooooo')
-                return await user.sendMessage('don\'t work with /np')
+              res = 'don\'t work with /np'
+            }else{
+              res = sponged(mess)
             }
             console.log(`[${usrname}]: ${mess} <${getDate()}>`)
-            const res = sponged(mess) 
+            res = sponged(mess) 
             console.log('↳ '+res)
+            db.push("/cmd[]",{usrname,mess,'time':getDate()});
             return await user.sendMessage(res)
         })
     } catch (error) {

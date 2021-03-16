@@ -8,15 +8,21 @@
   },
   "main": "app.ts",
   "scripts": {
-    "test": "tsc app.ts && node app.js"
+    "test": "npx tsc app.ts && node app.js",
+    "start": "node app.js",
+    "build": "npx tsc app.ts"
   },
   "author": "Guillaume-favier",
   "license": "ISC",
   "dependencies": {
     "bancho.js": "^0.9.7",
-    "dateformat": "^4.5.1"
+    "dateformat": "^4.5.1",
+    "node-json-db": "^1.3.0",
+    "ts-node": "^9.1.1",
+    "tsc": "^1.20150623.0"
   },
   "devDependencies": {
-    "@types/node": "^14.14.34"
+    "@types/node": "^14.14.34",
+    "typescript": "^4.2.3"
   }
 }

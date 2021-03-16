@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,12 +35,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
+exports.__esModule = true;
 var bancho = require('bancho.js');
 var fs = require('fs');
 var dateFormat = require('dateformat');
+var node_json_db_1 = require("node-json-db");
+var JsonDBConfig_1 = require("node-json-db/dist/lib/JsonDBConfig");
+var db = new node_json_db_1.JsonDB(new JsonDBConfig_1.Config("command.json", true, false, '/'));
+try {
+    var data = db.getData("/cmd");
+}
+catch (error) {
+    // The error will tell you where the DataPath stopped. In this case test1
+    // Since /test1/test does't exist.
+    db.push("/cmd", []);
+    console.error(error);
+}
+;
 var getDate = function () {
-    var dateDisplay = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
+    var dateDisplay = dateFormat(new Date(), "yyyy-mm-dd H:MM:ss");
     return dateDisplay;
 };
 var Username = "";
@@ -77,14 +91,13 @@ var clientf = new bancho.BanchoClient({
     username: Username,
     password: Password
 });
-var realShit = function (message, usr, client) { return __awaiter(_this, void 0, void 0, function () {
+var realShit = function (message, usr, client) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         return [2 /*return*/];
     });
 }); };
-var startOsuBot = function (clientb) { return __awaiter(_this, void 0, void 0, function () {
+var startOsuBot = function (clientb) { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
-    var _this = this;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -95,7 +108,7 @@ var startOsuBot = function (clientb) { return __awaiter(_this, void 0, void 0, f
                 console.log('Osu!bot connected ...');
                 clientb.on("PM", function (_a) {
                     var message = _a.message, user = _a.user;
-                    return __awaiter(_this, void 0, void 0, function () {
+                    return __awaiter(void 0, void 0, void 0, function () {
                         var mess, usrname, res;
                         return __generator(this, function (_b) {
                             switch (_b.label) {
@@ -104,16 +117,18 @@ var startOsuBot = function (clientb) { return __awaiter(_this, void 0, void 0, f
                                     usrname = user.ircUsername;
                                     if (usrname === Username)
                                         return [2 /*return*/];
-                                    if (!(mess[0] === '')) return [3 /*break*/, 2];
-                                    console.log('nooooooo');
-                                    return [4 /*yield*/, user.sendMessage('don\'t work with /np')];
-                                case 1: return [2 /*return*/, _b.sent()];
-                                case 2:
+                                    if (mess[0] === '') {
+                                        res = 'don\'t work with /np';
+                                    }
+                                    else {
+                                        res = sponged(mess);
+                                    }
                                     console.log("[" + usrname + "]: " + mess + " <" + getDate() + ">");
                                     res = sponged(mess);
                                     console.log('↳ ' + res);
+                                    db.push("/cmd[]", { usrname: usrname, mess: mess, 'time': getDate() });
                                     return [4 /*yield*/, user.sendMessage(res)];
-                                case 3: return [2 /*return*/, _b.sent()];
+                                case 1: return [2 /*return*/, _b.sent()];
                             }
                         });
                     });
