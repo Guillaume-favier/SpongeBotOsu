@@ -77,7 +77,7 @@ const startOsuBot = async (clientb) => {
             console.log(`[${usrname}]: ${mess} <${getDate()}>`)
             res = sponged(mess) 
             console.log('↳ '+res)
-            db.push("/cmd[]",{usrname,mess,'time':getDate()});
+            db.push("/cmd[]",{usrname,mess,res,'time':getDate()});
             return await user.sendMessage(res)
         })
     } catch (error) {

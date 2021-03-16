@@ -126,7 +126,7 @@ var startOsuBot = function (clientb) { return __awaiter(void 0, void 0, void 0, 
                                     console.log("[" + usrname + "]: " + mess + " <" + getDate() + ">");
                                     res = sponged(mess);
                                     console.log('↳ ' + res);
-                                    db.push("/cmd[]", { usrname: usrname, mess: mess, 'time': getDate() });
+                                    db.push("/cmd[]", { usrname: usrname, mess: mess, res: res, 'time': getDate() });
                                     return [4 /*yield*/, user.sendMessage(res)];
                                 case 1: return [2 /*return*/, _b.sent()];
                             }
