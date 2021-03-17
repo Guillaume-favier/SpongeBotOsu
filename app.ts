@@ -31,21 +31,21 @@ getCred()
 const sponged = (s:string):string => {
     s = s.toLowerCase()
     let newS = ""
-    let up = true
+    // let up = true
     for (let i = 0; i < s.length; i++) {
         const element = s[i];
-        if (up) {
-            newS += element.toUpperCase()
-            up=false
-        }else {
-            up = true
-            newS += element
-        }
-        // if (Math.floor((Math.random() * 2) + 1) === 1){
+        // if (up) {
         //     newS += element.toUpperCase()
-        // }else{
+        //     up=false
+        // }else {
+        //     up = true
         //     newS += element
         // }
+        if (Math.floor((Math.random() * 2) + 1) === 1){
+            newS += element.toUpperCase()
+        }else{
+            newS += element
+        }
     }
     return newS
 }
