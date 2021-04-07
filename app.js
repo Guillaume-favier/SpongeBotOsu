@@ -42,6 +42,11 @@ var dateFormat = require('dateformat');
 var node_json_db_1 = require("node-json-db");
 var JsonDBConfig_1 = require("node-json-db/dist/lib/JsonDBConfig");
 var db = new node_json_db_1.JsonDB(new JsonDBConfig_1.Config("command.json", true, false, '/'));
+function sleep(ms) {
+    return new Promise(function (resolve) { return setTimeout(resolve, ms); });
+}
+// const sel = "body > div.osu-layout__section.osu-layout__section--full.js-content.user_show > div > div > div > div.js-switchable-mode-page--scrollspy.js-switchable-mode-page--page > div.osu-page.osu-page--users > div > div.profile-header__top > div.profile-stats > dl:nth-child(3) > dd"
+var clg = function (m) { return console.log(m); };
 try {
     var data = db.getData("/cmd");
 }
@@ -52,10 +57,18 @@ catch (error) {
     console.error(error);
 }
 ;
+var allCases = function (entry, possiblities) {
+    for (var i = 0; i < possiblities.length; i++) {
+        if (entry.startsWith(possiblities[i]))
+            return true;
+        return false;
+    }
+};
 var getDate = function () {
     var dateDisplay = dateFormat(new Date(), "yyyy-mm-dd H:MM:ss");
     return dateDisplay;
 };
+// connection to bancho 
 var Username = "";
 var Password = "";
 var getCred = function () {
@@ -65,6 +78,7 @@ var getCred = function () {
     Password = obj['ServerPassword'];
 };
 getCred();
+//sponged func
 var sponged = function (s) {
     s = s.toLowerCase();
     var newS = "";
@@ -91,11 +105,6 @@ var clientf = new bancho.BanchoClient({
     username: Username,
     password: Password
 });
-var realShit = function (message, usr, client) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        return [2 /*return*/];
-    });
-}); };
 var startOsuBot = function (clientb) { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
     return __generator(this, function (_a) {
@@ -117,18 +126,48 @@ var startOsuBot = function (clientb) { return __awaiter(void 0, void 0, void 0, 
                                     usrname = user.ircUsername;
                                     if (usrname === Username)
                                         return [2 /*return*/];
-                                    if (mess[0] === '') {
-                                        res = 'don\'t work with /np';
+                                    if (!(mess[0] === '')) return [3 /*break*/, 1];
+                                    res = 'don\'t work with /np';
+                                    return [3 /*break*/, 8];
+                                case 1:
+                                    if (!mess.startsWith('!help')) return [3 /*break*/, 2];
+                                    res = "お可愛いこと (おかわいいかと (o kawaii koto))";
+                                    return [3 /*break*/, 8];
+                                case 2:
+                                    if (!allCases(mess.toLowerCase(), ['salut', 'bonjour', 'wesh'])) return [3 /*break*/, 3];
+                                    res = "Enchanté.";
+                                    return [3 /*break*/, 8];
+                                case 3:
+                                    if (!allCases(mess.toLowerCase(), ['lel', 'lul', 'lol'])) return [3 /*break*/, 4];
+                                    res = "Ah ça te fait rire.";
+                                    return [3 /*break*/, 8];
+                                case 4:
+                                    if (!allCases(mess.toLowerCase(), ['t\'es qui', 't ki', 't\'es', 'qui es-tu'])) return [3 /*break*/, 5];
+                                    res = "Le mec qui va te foutre au chaumage.";
+                                    return [3 /*break*/, 8];
+                                case 5:
+                                    if (!allCases(mess.toLowerCase(), ['!stop', 'stop', 'top', 'rnd'])) return [3 /*break*/, 7];
+                                    clg("Stop requested !");
+                                    return [4 /*yield*/, sleep((Math.random() * 10000) + 1)];
+                                case 6:
+                                    _b.sent();
+                                    res = "Now!";
+                                    return [3 /*break*/, 8];
+                                case 7:
+                                    if (allCases(mess.toLowerCase(), ['!playtime'])) {
+                                        clg(bancho);
+                                        // res = usrdontknow.playcount.toString()
                                     }
                                     else {
                                         res = sponged(mess);
                                     }
+                                    _b.label = 8;
+                                case 8:
                                     console.log("[" + usrname + "]: " + mess + " <" + getDate() + ">");
-                                    res = sponged(mess);
                                     console.log('↳ ' + res);
                                     db.push("/cmd[]", { usrname: usrname, mess: mess, res: res, 'time': getDate() });
                                     return [4 /*yield*/, user.sendMessage(res)];
-                                case 1: return [2 /*return*/, _b.sent()];
+                                case 9: return [2 /*return*/, _b.sent()];
                             }
                         });
                     });
