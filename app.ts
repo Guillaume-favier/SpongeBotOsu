@@ -3,7 +3,9 @@ const fs = require('fs')
 var dateFormat = require('dateformat');
 import { JsonDB } from 'node-json-db';
 import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+import {getAll} from "./users"
 var db = new JsonDB(new Config("command.json", true, false, '/'));
+const { exec } = require('child_process');
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -26,7 +28,7 @@ const allCases = (entry:string,possiblities:Array<string>) => {
 }
 
 const getDate = () => {
-    let dateDisplay = dateFormat(new Date(), "yyyy-mm-dd H:MM:ss");
+    let dateDisplay = dateFormat(new Date(), "dd-mm-yyyy H:MM:ss");
     return dateDisplay
 }
 
@@ -82,22 +84,10 @@ const startOsuBot = async (clientb) => {
             if (usrname === Username) return
             if (mess[0] === '') {
                 res = 'don\'t work with /np'
-            }else if(mess.startsWith('!help')){
-                res = "お可愛いこと (おかわいいかと (o kawaii koto))"
-            }else if(allCases(mess.toLowerCase(),['salut','bonjour','wesh'])){
-                res = "Enchanté."
-            }else if(allCases(mess.toLowerCase(),['lel','lul','lol'])){
-                res = "Ah ça te fait rire."
-            }else if(allCases(mess.toLowerCase(),['t\'es qui','t ki','t\'es','qui es-tu'])){
-                res = "Le mec qui va te foutre au chaumage."
-            }else if(allCases(mess.toLowerCase(),['!stop','stop','top','rnd'])){
-                clg("Stop requested !")
-                await sleep((Math.random() * 10000) + 1)
-                res = "Now!"
-            }else if(allCases(mess.toLowerCase(),['!playtime'])){
-                clg(bancho)
-                // res = usrdontknow.playcount.toString()
-            }else{
+            }else if(mess.startsWith("!user ")){
+                res = await getAll(mess.split(" ").splice(1).join(" "))
+            }
+            else{
                 res = sponged(mess)
             }
             console.log(`[${usrname}]: ${mess} <${getDate()}>`)
